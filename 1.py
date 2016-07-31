@@ -1,20 +1,17 @@
-''' 1-layer, L2 loss, 1 sample '''
 import numpy as np
-
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 def sigmoid_d(a):
     return a*(1-a)
 
-
-X = np.array([[1.123,3.243]])
+X = np.array([[1.123,3.243,0.2]])
 y = np.array([[0.3]]).T
 
 np.random.seed(1)
 
 # one hidden layer
-W = 2*np.random.random((2,1)) - 1
+W = 2*np.random.random((3,1)) - 1
 
 for i in xrange(5000):
     # Forward

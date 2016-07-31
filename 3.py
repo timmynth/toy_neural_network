@@ -26,11 +26,11 @@ for i in xrange(5000):
         a1 = sigmoid(z1)    # 1 x 2
         z2 = a1.dot(W2)     # 1 x 1
         a2 = sigmoid(z2)    # 1 x 1
-        # Compute Gradients dL_dW2
+        # Compute each layer's activations' responsibility
         dL_dz2 = (a2 - y) * sigmoid_d(a2) # 1 x 1
-        dL_dW2 = a1.T.dot(dL_dz2) # 2 x 1
-        # Compute Gradients dL_dW1
         dL_dz1 = dL_dz2.dot(W2.T) * sigmoid_d(a1) # 1 x 2
+        # Compute each weights' responsibility
+        dL_dW2 = a1.T.dot(dL_dz2) # 2 x 1
         dL_dW1 = x.T.dot(dL_dz1) # 3 x 2
         # Update W
         W1 = W1 - dL_dW1 * alpha1
