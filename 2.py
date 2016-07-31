@@ -1,34 +1,32 @@
-''' A simple 1-layer neural network example, with multiple X'''
-''' a = f(WX) , a->y'''
+''' 1-layer, L2 loss, some samples '''
 import numpy as np
-
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
-def sigmoid_output_to_derivative(a):
+def sigmoid_d(a):
     return a*(1-a)
 
-
 X = np.array([[0,0,1],[1,0,0],[0,0.5,0.5]])
-y = np.array([[0.4,0.3,0.8]]).T
+Y = np.array([[0.4,0.3,0.8]]).T
 
 np.random.seed(1)
 
 # one hidden layer
 W = 2*np.random.random((3,1)) - 1
 
-for i in xrange(10000):
-
+for i in xrange(5000):
     for n in xrange(X.shape[0]):  # iterate each sample
+        # The n-th sample
+        x = X[n].reshape(1,-1) # 1 x 3
+        y = Y[n].reshape(1,-1) # 1 x 1
         # forward
-        z = np.dot(X[n].reshape(1,-1), W)
+        z = np.dot(x, W)
         a = sigmoid(z)
-        # Compute Gradients dC_dW
-        dC_dz = (a - y[n].reshape(1,-1)) * sigmoid_output_to_derivative(a)
-        dz_dW = X[n].reshape(1,-1)
-        dC_dW = dC_dz * dz_dW
+        # Compute Gradients dL_dW
+        dL_dz = (a - y) * sigmoid_d(a) # 1 x 1
+        dz_dW = x # 1 x 3
+        dL_dW = dz_dW.T.dot(dL_dz) # 3 x 1
         # Update W
-        W = W - dC_dW.T * 0.05
-
+        W = W - dL_dW * 0.5
     print '[Iter] %d', i
     print sigmoid(np.dot(X,W))
